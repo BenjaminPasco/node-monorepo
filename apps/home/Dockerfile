@@ -14,7 +14,7 @@ RUN pnpm install
 
 COPY . .
 
-RUN pnpm turbo run build --filter=apps/home
+RUN pnpm turbo run build --filter=home
 
 CMD ["pnpm", "start:home"]
 
