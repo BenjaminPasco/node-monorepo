@@ -35,6 +35,9 @@ jobs:
     needs: build-and-push
 
     steps:
+      - name: Test SSH Connection
+        run: |
+          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no github-action-deploy@165.227.169.225 'echo "SSH connection successful"'
       - name: Set up SSH key
         uses: appleboy/ssh-action@v0.1.0
         with:
