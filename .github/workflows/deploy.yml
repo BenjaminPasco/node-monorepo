@@ -44,7 +44,7 @@ jobs:
         run: |
           ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no github-action-deploy@165.227.169.225 'echo "SSH connection successful"'
       - name: Set up SSH key
-        uses: appleboy/ssh-action@v0.1.0
+        uses: appleboy/ssh-action@latest
         with:
           host: ${{ secrets.DROPLET_IP }}
           username: ${{ secrets.DROPLET_USER }}
