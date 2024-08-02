@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  home:
+    image: home
+    build:
+      dockerfile: ./apps/home/Dockerfile
+    ports:
+      - "8000:3000" # extern/intern
+    networks:
+      - network1
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - network1
+
+networks:
+  network1:
