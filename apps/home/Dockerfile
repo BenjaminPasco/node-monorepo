@@ -6,6 +6,7 @@ WORKDIR /usr/src/app
 
 COPY package.json ./
 COPY pnpm-lock.yaml ./
+COPY pnpm-workspace.yaml ./
 
 COPY apps/home/package.json ./apps/home/package.json
 
