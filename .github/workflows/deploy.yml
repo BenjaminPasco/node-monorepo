@@ -1,0 +1,30 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Docker build
+        uses: docker/build-push-action@v1
+        with:
+          context: .
+          dockerfile: Dockerfile
+          push: true
+          tags: 165.227.169.225:3000
+
+      - name: Deploy to DigitalOcean
+        uses: digitalocean/action-deploy@v2
+        with:
+          do-credentials: ${{ secrets.DIGITAL_OCEAN_TOKEN }}
+          do-app-name: home
+          do-agent-token: ${{ secrets.DIGITAL_OCEAN_AGENT_TOKEN }}
+          on-prune: true
