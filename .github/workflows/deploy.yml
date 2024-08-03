@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build-and-push:
+  push-image-dockerhub:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
 
@@ -41,6 +41,8 @@ jobs:
       #     docker push ${{ secrets.DOCKER_USERNAME }}/home:latest
 
   test-ssh:
+    needs: push-image-dockerhub
+
     runs-on: ubuntu-latest
 
     steps:
@@ -50,3 +52,7 @@ jobs:
           echo "${{ secrets.PROD_DEPLOY_AGENT_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.PROD_IP }} >> ~/.ssh/known_hosts
+
+      - name: Connect SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.PROD_IP }} "echo SSH connection successful"
