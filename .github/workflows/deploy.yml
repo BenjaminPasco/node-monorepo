@@ -69,7 +69,13 @@ jobs:
 
       - name: Update Containers
         run: |
+          ls -al
+          cd /
+          ls -al
+          cd home
+          ls -al
           cd /home
+          ls -al
           docker compose down
           docker compose pull
           docker compose up -d
