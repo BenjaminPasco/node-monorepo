@@ -35,16 +35,45 @@ jobs:
     needs: build-and-push
 
     steps:
-      - name: Set up SSH Key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DROPLET_SSH_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-      - name: Deploy Docker Image
-        run: |
-          ssh -o StrictHostKeyChecking=no ${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_IP }} << 'EOF'
-            docker pull ${{ secrets.DOCKER_USERNAME }}/home:latest
-            cd /home/github-action-deploy/myapp  # Replace with the actual path to your docker-compose directory
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.DROPLET_SSH_KEY }}
+
+      - name: Copy Docker Compose file to VM
+        uses: appleboy/scp-action@v0.1.5
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          source: "docker-compose.yml"
+          target: "~/docker-compose.yml"
+
+      - name: Deploy Docker Compose on VM
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.DROPLET_IP }}
+          username: ${{ secrets.DROPLET_USER }}
+          key: ${{ secrets.DROPLET_SSH_KEY }}
+          script: |
+            cd ~
+            docker-compose pull
             docker-compose up -d
-          EOF
+
+    # steps:
+    #   - name: Set up SSH Key
+    #     run: |
+    #       mkdir -p ~/.ssh
+    #       echo "${{ secrets.DROPLET_SSH_KEY }}" > ~/.ssh/id_rsa
+    #       chmod 600 ~/.ssh/id_rsa
+
+    #   - name: Deploy Docker Image
+    #     run: |
+    #       ssh -o StrictHostKeyChecking=no ${{ secrets.DROPLET_USER }}@${{ secrets.DROPLET_IP }} << 'EOF'
+    #         docker pull ${{ secrets.DOCKER_USERNAME }}/home:latest
+    #         cd /home/github-action-deploy/myapp
+    #         docker-compose up -d
+    #       EOF
