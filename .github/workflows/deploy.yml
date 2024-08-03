@@ -31,15 +31,6 @@ jobs:
           push: true
           tags: ${{secrets.DOCKER_USERNAME}}/home:latest
 
-      # - name: Build Docker image
-      #   run: |
-      #     docker build -t home:latest -f apps/home/Dockerfile .
-
-      # - name: Tag and Push Docker image to Docker Hub
-      #   run: |
-      #     docker tag home:latest ${{ secrets.DOCKER_USERNAME }}/home:latest
-      #     docker push ${{ secrets.DOCKER_USERNAME }}/home:latest
-
   Deploy:
     needs: push-image-dockerhub
 
@@ -63,12 +54,9 @@ jobs:
           scp docker-compose.prod.yml root@${{ secrets.PROD_IP }}:/home/docker-compose.override.yml
           scp nginx.conf root@${{ secrets.PROD_IP }}:/home
 
-      - name: Connect SSH
+      - name: Connect SSH and Update containers
         run: |
           ssh root@${{ secrets.PROD_IP }}
-
-      - name: Update Containers
-        run: |
           ls -al
           cd /
           ls -al
