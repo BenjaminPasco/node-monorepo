@@ -59,9 +59,9 @@ jobs:
 
       - name: Copy files
         run: |
-          scp docker-compose.yml root@${{ secrets.PROD_IP }}/..
-          scp docker-compose.prod.yml root@${{ secrets.PROD_IP }}/..
-          scp nginx.conf root@${{ secrets.PROD_IP }}/..
+          scp docker-compose.yml root@${{ secrets.PROD_IP }}/docker-compose.yml
+          scp docker-compose.prod.yml root@${{ secrets.PROD_IP }}/docker-compose.prod.yml
+          scp nginx.conf root@${{ secrets.PROD_IP }}/nginx.conf
 
       - name: Connect SSH
         run: |
