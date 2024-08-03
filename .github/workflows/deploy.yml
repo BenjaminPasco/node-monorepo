@@ -40,8 +40,8 @@ jobs:
       #     docker tag home:latest ${{ secrets.DOCKER_USERNAME }}/home:latest
       #     docker push ${{ secrets.DOCKER_USERNAME }}/home:latest
 
-  test-ssh:
-    # needs: push-image-dockerhub
+  deploy:
+    needs: push-image-dockerhub
 
     runs-on: ubuntu-latest
 
@@ -54,18 +54,12 @@ jobs:
           chmod 600 /home/runner/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.PROD_IP }} >> ~/.ssh/known_hosts
 
-      - name: Debug SSH Setup
+      - name: Copy files
         run: |
-          ls -al ~/.ssh
-          cat ~/.ssh/id_rsa
-
-      - name: Test SSH Connection
-        run: |
-          ssh -vvv -o StrictHostKeyChecking=no root@${{ secrets.PROD_IP }} "echo SSH connection successful"
+          scp docker-compose.yml root@${{ secrets.PROD_IP }}/home
+          scp docker-compose.prod.yml root@${{ secrets.PROD_IP }}/home
+          scp nginx.conf root@${{ secrets.PROD_IP }}/home
 
       - name: Connect SSH
         run: |
           ssh root@${{ secrets.PROD_IP }}
-          touch test
-          echo "hello world" > ./test
-          cat test
