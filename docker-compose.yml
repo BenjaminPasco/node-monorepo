@@ -2,9 +2,6 @@ version: "3.8"
 
 services:
   home:
-    image: bpasco/home:latest
-    build:
-      dockerfile: ./apps/home/Dockerfile
     ports:
       - "8000:3000" # extern/intern
     networks:
