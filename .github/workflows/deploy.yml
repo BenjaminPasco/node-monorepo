@@ -48,8 +48,9 @@ jobs:
     steps:
       - name: Set up SSH
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.PROD_KEY }}" > ~/.ssh/id_rsa
+          mkdir -p /home/runner/.ssh
+          touch /home/runner/.ssh/id_rsa
+          echo "${{ secrets.PROD_KEY }}" > /home/runner/.ssh/id_rsa
           chmod 600 /home/runner/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.PROD_IP }} >> ~/.ssh/known_hosts
 
