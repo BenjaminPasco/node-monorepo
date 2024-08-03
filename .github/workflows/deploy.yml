@@ -55,4 +55,4 @@ jobs:
 
       - name: Connect SSH
         run: |
-          ssh -o StrictHostKeyChecking=no root@${{ secrets.PROD_IP }} "echo SSH connection successful"
+          ssh root@${{ secrets.PROD_IP }} "echo SSH connection successful"
