@@ -50,7 +50,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.PROD_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          chmod 600 /home/runner/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.PROD_IP }} >> ~/.ssh/known_hosts
 
       - name: Debug SSH Setup
