@@ -57,13 +57,7 @@ jobs:
       - name: Connect SSH and Update containers
         run: |
           ssh root@${{ secrets.PROD_IP }}
-          ls -al
-          cd /
-          ls -al
-          cd home
-          ls -al
           cd /home
-          ls -al
           docker compose down
           docker compose pull
           docker compose up -d
