@@ -53,6 +53,15 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ secrets.PROD_IP }} >> ~/.ssh/known_hosts
 
+      - name: Debug SSH Setup
+        run: |
+          ls -al ~/.ssh
+          cat ~/.ssh/id_rsa
+
+      - name: Test SSH Connection
+        run: |
+          ssh -vvv -o StrictHostKeyChecking=no root@${{ secrets.PROD_IP }} "echo SSH connection successful"
+
       - name: Connect SSH
         run: |
           ssh root@${{ secrets.PROD_IP }}
