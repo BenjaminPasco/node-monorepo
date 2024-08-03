@@ -50,14 +50,15 @@ jobs:
 
       - name: Copy files
         run: |
-          scp docker-compose.yml root@${{ secrets.PROD_IP }}:/home/docker-compose.yml
-          scp docker-compose.prod.yml root@${{ secrets.PROD_IP }}:/home/docker-compose.override.yml
-          scp nginx.conf root@${{ secrets.PROD_IP }}:/home
+          scp -o StrictHostKeyChecking=no docker-compose.yml root@${{ secrets.PROD_IP }}:/home/docker-compose.yml
+          scp -o StrictHostKeyChecking=no docker-compose.prod.yml root@${{ secrets.PROD_IP }}:/home/docker-compose.override.yml
+          scp -o StrictHostKeyChecking=no nginx.conf root@${{ secrets.PROD_IP }}:/home
 
       - name: Connect SSH and Update containers
         run: |
-          ssh root@${{ secrets.PROD_IP }}
-          cd /home
-          docker compose down
-          docker compose pull
-          docker compose up -d
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.PROD_IP }} << 'EOF'
+            cd /home
+            docker compose down
+            docker compose pull
+            docker compose up -d
+          EOF
