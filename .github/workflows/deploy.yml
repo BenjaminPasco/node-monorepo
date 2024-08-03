@@ -55,4 +55,7 @@ jobs:
 
       - name: Connect SSH
         run: |
-          ssh root@${{ secrets.PROD_IP }} "echo SSH connection successful"
+          ssh root@${{ secrets.PROD_IP }}
+          touch test
+          echo "hello world" > ./test
+          cat test
