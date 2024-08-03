@@ -59,8 +59,8 @@ jobs:
 
       - name: Copy files
         run: |
-          scp docker-compose.yml root@${{ secrets.PROD_IP }}:/home
-          scp docker-compose.prod.yml root@${{ secrets.PROD_IP }}:/home
+          scp docker-compose.yml root@${{ secrets.PROD_IP }}:/home/docker-compose.yml
+          scp docker-compose.prod.yml root@${{ secrets.PROD_IP }}:/home/docker-compose.override.yml
           scp nginx.conf root@${{ secrets.PROD_IP }}:/home
 
       - name: Connect SSH
@@ -72,4 +72,4 @@ jobs:
           cd /home
           docker compose down
           docker compose pull
-          docker compose -f  docker.compose.yml -f docker.compose.prod.yml up -d
+          docker compose up -d
