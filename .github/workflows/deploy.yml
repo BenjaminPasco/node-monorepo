@@ -41,9 +41,9 @@ jobs:
       #     docker push ${{ secrets.DOCKER_USERNAME }}/home:latest
 
   test-ssh:
-    needs: push-image-dockerhub
+    # needs: push-image-dockerhub
 
-    # runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Set up SSH
