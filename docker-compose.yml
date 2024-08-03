@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   home:
-    image: home
+    image: bpasco/home:latest
     build:
       dockerfile: ./apps/home/Dockerfile
     ports:
