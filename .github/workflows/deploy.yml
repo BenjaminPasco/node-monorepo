@@ -39,3 +39,14 @@ jobs:
       #   run: |
       #     docker tag home:latest ${{ secrets.DOCKER_USERNAME }}/home:latest
       #     docker push ${{ secrets.DOCKER_USERNAME }}/home:latest
+
+  test-ssh:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PROD_DEPLOY_AGENT_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.PROD_IP }} >> ~/.ssh/known_hosts
