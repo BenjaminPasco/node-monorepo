@@ -66,3 +66,10 @@ jobs:
       - name: Connect SSH
         run: |
           ssh root@${{ secrets.PROD_IP }}
+
+      - name: Update Containers
+        run: |
+          cd /home
+          docker compose down
+          docker compose pull
+          docker compose -f  docker.compose.yml -f docker.compose.prod.yml up -d
